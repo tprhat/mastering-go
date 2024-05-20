@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path"
 )
 
-func main() {
+func error_handling() {
 	LOGFILE := path.Join(os.TempDir(), "mGo.log")
 	fmt.Println(LOGFILE)
 	f, err := os.OpenFile(LOGFILE, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -25,4 +26,8 @@ func main() {
 	iLog.Println("mastering goooooooooooooooooooo")
 	iLog.SetFlags(log.Lshortfile | log.LstdFlags)
 	iLog.Println("Another loooog")
+
+	w := io.MultiWriter(f, os.Stderr)
+	logger := log.New(w, "myApp: ", LstdFlags)
+	logger.Printf("BOOK: %d", os.Getpid())
 }
